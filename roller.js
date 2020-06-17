@@ -53,7 +53,8 @@ function createFromCanvas(canvas, options) {
 
 	let points = lib.computePoints(values, options.scale);
 	let faces = lib.triangulate(points);
-	return lib.toSTL(faces, "roller");
+//	return lib.toSTL(faces, "roller");
+	return lib.toSTLbinary(faces);
 }
 
 export async function createFromURL(url, options) {
@@ -73,7 +74,8 @@ export async function createFromFile(file, options) {
 export function createDownload(stl) {
 	const blob = new Blob([stl], {type : 'model/stl'});
 	let link = document.createElement("a");
-	let size = stl.length / (1024 ** 2);
+	let bytes = (typeof(stl) == "string" ? stl.length : stl.byteLength);
+	let size = bytes / (1024 ** 2);
 	link.textContent = `Download STL (${size.toFixed(1)} MB)`;
 	link.href = URL.createObjectURL(blob);
 	link.download = "roller.stl";

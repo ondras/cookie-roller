@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>Roller STL</title>
+		<title>Cookie Roller STL</title>
 		<link rel="stylesheet" href="roller.css" />
 		<script src="https://unpkg.com/three@0.115.0/build/three.min.js"></script>
 		<script src="https://unpkg.com/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
@@ -10,11 +10,14 @@
 	</head>
 	<body>
 		<h1>Cookie Roller STL</h1>
+		<p>Inspired by <a href="https://twitter.com/RobFathauerArt/status/1272954260586561536">Robert Fathauer</a>
+			and <a href="https://www.georgehart.com/rollers/">George Hart</a>.<br/>
+			Pick a heightmap image; this tool will apply it to a cylinder,<br/>creating a STL file suitable for 3D-printing.</p>
 
 		<div id="setup">
 			<label><span>File:</span> <input type="file" /></label>
 			<label><span>Downsize: <em title="Scale the source image down to 512px - large images are slow to process and generate huge outputs">?</em></span> <input type="checkbox" name="downsize" checked="checked"/></label>
-			<label><span>Scale: <em title="Strength of the effect">?</em></span> <input type="range" name="scale" min="-3" max="3" value="1" step="0.1" /><span></span></label>
+			<label><span>Scale: <em title="Strength of the effect">?</em></span> <input type="range" name="scale" min="-5" max="5" value="2" step="0.1" /><span></span></label>
 			<label><span>Invert: <em title="Base color is black (unchecked) or white (checked)">?</em></span> <input type="checkbox" name="invert" checked="checked" /></label>
 			<button>Create</button>
 		</div>

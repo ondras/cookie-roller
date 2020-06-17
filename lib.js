@@ -82,7 +82,7 @@ export function triangulate(points) {
 	return faces;
 }
 
-export function toSTL(faces, name) {
+export function toSTLtext(faces, name) {
 	let lines = [];
 	lines.push(`solid ${name}`);
 
@@ -99,4 +99,36 @@ export function toSTL(faces, name) {
 
 	lines.push(`endsolid ${name}`);
 	return lines.join("\n");
+}
+
+export function toSTLbinary(faces) {
+	let buffer = new ArrayBuffer(80 + 4 + faces.length * (12 * 4 + 2));
+	let view = new DataView(buffer);
+	let offset = 80;
+	view.setUint32(offset, faces.length, true)
+	offset += 4;
+
+	function writeFloat32(number) {
+		view.setFloat32(offset, number, true);
+		offset += 4;
+	}
+
+	faces.forEach(face => {
+		// normal
+		writeFloat32(0);
+		writeFloat32(0);
+		writeFloat32(0);
+
+		// faces
+		face.vertices.forEach(v => {
+			writeFloat32(v[0]);
+			writeFloat32(v[1]);
+			writeFloat32(v[2]);
+		});
+
+		view.setUint16(offset, 0);
+		offset += 2;
+	});
+
+	return buffer;
 }
