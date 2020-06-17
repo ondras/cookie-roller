@@ -1,0 +1,48 @@
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+button {
+	font-size: 200%;
+	font-weight: bold;
+}
+
+#result {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 1em;
+}
+
+#result a {
+	margin-top: 1em;
+}
+
+#setup {
+	display: flex;
+	flex-direction: column;
+	align-items: start;
+}
+
+#setup label {
+	display: flex;
+	margin-bottom: 8px;
+}
+
+em {
+	font-weight: bold;
+	font-style: normal;
+	color: dodgerblue;
+	border-bottom: 1px dotted #888;
+}
+
+
+#setup label > span:first-child {
+	width: 100px;
+}
+
+button {
+	margin-left: 100px;
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Roller STL</title>
+		<link rel="stylesheet" href="roller.css" />
+		<script src="https://unpkg.com/three@0.115.0/build/three.min.js"></script>
+		<script src="https://unpkg.com/three@0.115.0/examples/js/loaders/STLLoader.js"></script>
+		<script src="https://unpkg.com/three@0.115.0/examples/js/controls/OrbitControls.js"></script>
+	</head>
+	<body>
+		<h1>Cookie Roller STL</h1>
+
+		<div id="setup">
+			<label><span>File:</span> <input type="file" /></label>
+			<label><span>Downsize: <em title="Scale the source image down to 512px - large images are slow to process and generate huge outputs">?</em></span> <input type="checkbox" name="downsize" checked="checked"/></label>
+			<label><span>Scale: <em title="Strength of the effect">?</em></span> <input type="range" name="scale" min="-3" max="3" value="1" step="0.1" /><span></span></label>
+			<label><span>Invert: <em title="Base color is black (unchecked) or white (checked)">?</em></span> <input type="checkbox" name="invert" checked="checked" /></label>
+			<button>Create</button>
+		</div>
+
+		<div id="result"></div>
+
+<script type="module">
+import * as roller from "./roller.js";
+import Scene from "./scene.js";
+
+
+let scene;
+
+function show(stl) {
+	let parent = document.querySelector("#result");
+	parent.innerHTML = "";
+
+	scene && scene.dispose();
+	scene = new Scene(stl);
+	parent.appendChild(scene.node);
+
+	let link = roller.createDownload(stl);
+	parent.appendChild(link);
+}
+
+async function go() {
+	let file = document.querySelector("[type=file]").files[0];
+	if (!file) { return alert("No file selected"); }
+
+	let options = {
+		scale: document.querySelector("[name=scale]").valueAsNumber,
+		invert: document.querySelector("[name=invert]").checked,
+		downsize: document.querySelector("[name=downsize]").checked
+	}
+
+	let stl;
+	try {
+		stl = await roller.createFromFile(file, options);
+	} catch (e) {
+		return alert(e.message);
+	}
+
+	show(stl);
+}
+
+const button = document.querySelector("button");
+button.addEventListener("click", e => {
+	let old = button.textContent;
+	button.disabled = true;
+	button.textContent = "Please wait...";
+	go();
+	button.disabled = false;
+	button.textContent = old;
+});
+
+[...document.querySelectorAll("[type=range]")].forEach(input => {
+	function sync() { input.nextElementSibling.textContent = input.value; }
+	sync();
+	input.addEventListener("input", sync);
+});
+
+roller.createFromURL("smile.png").then(show);
+
+</script>
+	</body>
+</html>
+
+
+
