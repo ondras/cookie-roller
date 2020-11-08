@@ -43,7 +43,7 @@ function createFromCanvas(canvas, options) {
 			let b = imageData.data[o+2];
 			let a = imageData.data[o+3];
 
-			let value = (0.299*r + 0.587*g + 0.114*b) / (255*3);
+			let value = (0.299*r + 0.587*g + 0.114*b) / 255;
 			if (options.invert) { value = 1-value; }
 			if (!a) { value = 0; }
 
